@@ -76,23 +76,23 @@ public class ARNavigationManager : MonoBehaviour
     }
 
     void DrawPathToTarget()
-{
-    if (!userAgent.isOnNavMesh) return;
-
-    NavMeshPath path = new NavMeshPath();
-    bool foundPath = NavMesh.CalculatePath(
-        userAgent.transform.position,
-        currentTarget.position,
-        NavMesh.AllAreas,
-        path
-    );
-
-    if (foundPath && path.status == NavMeshPathStatus.PathComplete)
     {
-        pathLine.positionCount = path.corners.Length;
-        pathLine.SetPositions(path.corners);
+        if (!userAgent.isOnNavMesh) return;
+
+        NavMeshPath path = new NavMeshPath();
+        bool foundPath = NavMesh.CalculatePath(
+            userAgent.transform.position,
+            currentTarget.position,
+            NavMesh.AllAreas,
+            path
+        );
+
+        if (foundPath && path.status == NavMeshPathStatus.PathComplete)
+        {
+            pathLine.positionCount = path.corners.Length;
+            pathLine.SetPositions(path.corners);
+        }
     }
-}
 
     public void SetDestinationByIndex(int index)
     {
