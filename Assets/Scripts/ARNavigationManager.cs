@@ -10,7 +10,7 @@ public class ARNavigationManager : MonoBehaviour
     public struct Destination
     {
         public string roomName;      // Tên hiển thị trên UI (VD: Phòng Họp)
-        public Transform targetTransform; // Object vị trí trong Map 3D
+        public List<Transform> targetTransforms; // Object vị trí trong Map 3D
     }
 
     [Header("AR Setup")]
@@ -101,8 +101,16 @@ public class ARNavigationManager : MonoBehaviour
         
         if (index >= 0 && index < destinationList.Count)
         {
-            currentTarget = destinationList[index].targetTransform;
-            pathLine.enabled = true; // Bật vẽ đường
+            currentTarget = GetClosestDoor(destinationList[index].targetTransforms);
+            if (currentTarget != null)
+            {
+                pathLine.enabled = true; // Bật vẽ đường
+            } else
+            {
+                pathLine.enabled = false; // Tắt vẽ đường nếu không tìm được cửa
+                pathLine.positionCount = 0;
+            }
+            
         }
         else
         {
@@ -110,5 +118,56 @@ public class ARNavigationManager : MonoBehaviour
             pathLine.enabled = false; // Tắt vẽ đường nếu chọn sai/hủy
             pathLine.positionCount = 0;
         }
+    }
+    // Thêm hàm này
+    Transform GetClosestDoor(List<Transform> doors)
+    {
+        if (doors == null || doors.Count == 0) return null;
+        if (doors.Count == 1) return doors[0];
+
+        Transform bestDoor = null;
+        float shortestDistance = Mathf.Infinity;
+        NavMeshPath testPath = new NavMeshPath();
+
+        foreach (Transform door in doors)
+        {
+            if (door == null) continue;
+
+            bool foundPath = NavMesh.CalculatePath(
+                userAgent.transform.position,
+                door.position,
+                NavMesh.AllAreas,
+                testPath
+            );
+
+            if (foundPath && testPath.status == NavMeshPathStatus.PathComplete)
+            {
+                float pathLength = GetPathLength(testPath);
+                
+                if (pathLength < shortestDistance)
+                {
+                    shortestDistance = pathLength;
+                    bestDoor = door;
+                }
+            }
+        }
+
+        return bestDoor;
+    }
+
+    // Thêm hàm này
+    float GetPathLength(NavMeshPath path)
+    {
+        float length = 0.0f;
+        
+        if (path.status != NavMeshPathStatus.PathInvalid && path.corners.Length > 1)
+        {
+            for (int i = 1; i < path.corners.Length; i++)
+            {
+                length += Vector3.Distance(path.corners[i - 1], path.corners[i]);
+            }
+        }
+        
+        return length;
     }
 }
