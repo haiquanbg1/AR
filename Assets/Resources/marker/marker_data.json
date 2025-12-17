@@ -1,0 +1,304 @@
+{
+  "markers": [
+    {
+      "id": "vexe",
+      "floor": 1,
+      "coordinates": {
+        "x": 0.7,
+        "y": 0,
+        "z": 33.7
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/vexe.png"
+    },
+    {
+      "id": "entrydoor1",
+      "floor": 1,
+      "coordinates": {
+        "x": -2.7,
+        "y": 0,
+        "z": 11
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/entrydoor.png"
+    },
+    {
+      "id": "101",
+      "floor": 1,
+      "coordinates": {
+        "x": -5.65,
+        "y": 0,
+        "z": 30.12
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room101.png"
+    },
+    {
+      "id": "102",
+      "floor": 1,
+      "coordinates": {
+        "x": -8.36,
+        "y": 0,
+        "z": 27.74
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room102.png"
+    },
+    {
+      "id": "103",
+      "floor": 1,
+      "coordinates": {
+        "x": -8.47,
+        "y": 0,
+        "z": 18.26
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room103.png"
+    },
+    {
+      "id": "104",
+      "floor": 1,
+      "coordinates": {
+        "x": -8.43,
+        "y": 0,
+        "z": 5.42
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room104.png"
+    },
+    {
+      "id": "105",
+      "floor": 1,
+      "coordinates": {
+        "x": -8.6,
+        "y": 0,
+        "z": 1.76
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room105.png"
+    },
+    {
+      "id": "106",
+      "floor": 1,
+      "coordinates": {
+        "x": -8.45,
+        "y": 0,
+        "z": -10.45
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room106.png"
+    },
+    {
+      "id": "107",
+      "floor": 1,
+      "coordinates": {
+        "x": -8.56,
+        "y": 0,
+        "z": -22.66
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room107.png"
+    },
+    {
+      "id": "wcnam",
+      "floor": 1,
+      "coordinates": {
+        "x": -8.16,
+        "y": 0,
+        "z": -30.47
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/wcnam.png"
+    },
+    {
+      "id": "wcnu",
+      "floor": 1,
+      "coordinates": {
+        "x": -8.12,
+        "y": 0,
+        "z": -34.63
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/wcnu.png"
+    },
+    {
+      "id": "entrydoor2",
+      "floor": 1,
+      "coordinates": {
+        "x": 3.8,
+        "y": 0,
+        "z": 21.1
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/entrydoor2.png"
+    },
+    {
+      "id": "cuat2",
+      "floor": 2,
+      "coordinates": {
+        "x": 12.3,
+        "y": 4.3,
+        "z": 23.4
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/cauthang.png"
+    },
+    {
+      "id": "201",
+      "floor": 2,
+      "coordinates": {
+        "x": 22.27,
+        "y": 4.3,
+        "z": 24.3
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room201.png"
+    },
+    {
+      "id": "202",
+      "floor": 2,
+      "coordinates": {
+        "x": 26.4,
+        "y": 4.3,
+        "z": 24.3
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room202.png"
+    },
+    {
+      "id": "203",
+      "floor": 2,
+      "coordinates": {
+        "x": 35.7,
+        "y": 4.3,
+        "z": 21.1
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room203.png"
+    },
+    {
+      "id": "204",
+      "floor": 2,
+      "coordinates": {
+        "x": 35.9,
+        "y": 4.3,
+        "z": 16.8
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room204.png"
+    },
+    {
+      "id": "205",
+      "floor": 2,
+      "coordinates": {
+        "x": 12.98,
+        "y": 4.3,
+        "z": 19.09
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room205.png"
+    },
+    {
+      "id": "206",
+      "floor": 2,
+      "coordinates": {
+        "x": 19.91,
+        "y": 4.3,
+        "z": 18.95
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room206.png"
+    },
+    {
+      "id": "207",
+      "floor": 2,
+      "coordinates": {
+        "x": 26.99,
+        "y": 4.3,
+        "z": 19.08
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room207.png"
+    },
+    {
+      "id": "208",
+      "floor": 2,
+      "coordinates": {
+        "x": 27.23,
+        "y": 4.3,
+        "z": 0.85
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room208.png"
+    },
+    {
+      "id": "209",
+      "floor": 2,
+      "coordinates": {
+        "x": 20.17,
+        "y": 4.3,
+        "z": 0.93
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room209.png"
+    },
+    {
+      "id": "210",
+      "floor": 2,
+      "coordinates": {
+        "x": 13.31,
+        "y": 4.3,
+        "z": 1.03
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room210.png"
+    },
+    {
+      "id": "211",
+      "floor": 2,
+      "coordinates": {
+        "x": 6.9,
+        "y": 4.3,
+        "z": 1.5
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room211.png"
+    },
+    {
+      "id": "213",
+      "floor": 2,
+      "coordinates": {
+        "x": 8.77,
+        "y": 4.3,
+        "z": -9.16
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room213.png"
+    },
+    {
+      "id": "214",
+      "floor": 2,
+      "coordinates": {
+        "x": 13.61,
+        "y": 4.3,
+        "z": -9.16
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room214.png"
+    },
+    {
+      "id": "215",
+      "floor": 2,
+      "coordinates": {
+        "x": 18.81,
+        "y": 4.3,
+        "z": -9.38
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room215.png"
+    },
+    {
+      "id": "216",
+      "floor": 2,
+      "coordinates": {
+        "x": 23.96,
+        "y": 4.3,
+        "z": -9.16
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room216.png"
+    },
+    {
+      "id": "217",
+      "floor": 2,
+      "coordinates": {
+        "x": 29.04,
+        "y": 4.3,
+        "z": -9.35
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/room217.png"
+    },
+    {
+      "id": "wc2",
+      "floor": 2,
+      "coordinates": {
+        "x": 8.3,
+        "y": 4.3,
+        "z": 16.84
+      },
+      "qr_code_file": "./Assets/Resources/marker/tang1/wc2.png"
+    }
+    ]
+}

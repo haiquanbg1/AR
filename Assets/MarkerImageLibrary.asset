@@ -260,16 +260,6 @@ MonoBehaviour:
     m_Name: room211
     m_Texture: {fileID: 0}
   - m_SerializedGuid:
-      m_GuidLow: 5605831392976442690
-      m_GuidHigh: 15312374934681889206
-    m_SerializedTextureGuid:
-      m_GuidLow: 9954116856308945558
-      m_GuidHigh: 2301081462701196185
-    m_Size: {x: 0.2, y: 0.2}
-    m_SpecifySize: 1
-    m_Name: room212
-    m_Texture: {fileID: 0}
-  - m_SerializedGuid:
       m_GuidLow: 5625772902061107043
       m_GuidHigh: 7188261257906780832
     m_SerializedTextureGuid:
@@ -318,4 +308,14 @@ MonoBehaviour:
     m_Size: {x: 0.2, y: 0.2}
     m_SpecifySize: 1
     m_Name: room217
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5738637584208973043
+      m_GuidHigh: 11097810285949967273
+    m_SerializedTextureGuid:
+      m_GuidLow: 5698335386143100410
+      m_GuidHigh: 135638981852234298
+    m_Size: {x: 0.2, y: 0.2}
+    m_SpecifySize: 1
+    m_Name: vexe
     m_Texture: {fileID: 0}
