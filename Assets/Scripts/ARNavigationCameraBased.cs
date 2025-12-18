@@ -58,7 +58,11 @@ public class ARNavigationCameraBased : MonoBehaviour
     void AlignMapToMarker(ARTrackedImage marker)
     {
         worldContent.position = marker.transform.position;
-        worldContent.rotation = marker.transform.rotation;
+        worldContent.rotation = Quaternion.Euler(
+            0,
+            marker.transform.eulerAngles.y,
+            0
+        );
         
         // Điều chỉnh góc quay nếu cần
         // worldContent.Rotate(Vector3.up, 180);
