@@ -4,7 +4,7 @@ using UnityEngine.AI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-public class ARNavigationManager : MonoBehaviour
+public class ARNavigationCameraBased : MonoBehaviour
 {
     [System.Serializable]
     public struct Destination
@@ -19,19 +19,30 @@ public class ARNavigationManager : MonoBehaviour
     public Transform mainCamera;
 
     [Header("Navigation")]
-    public NavMeshAgent userAgent;
     public LineRenderer pathLine;
     public List<Destination> destinationList;
     
     [Header("Settings")]
-    public float pathUpdateInterval = 0.2f;
+    public float pathUpdateInterval = 0.3f;
+    public float pathHeightOffset = 0.1f; // Nâng đường lên khỏi sàn
     
     private Transform currentTarget;
     private bool isMapAligned = false;
     private float lastPathUpdateTime = 0f;
+    private Vector3 lastCameraPosition;
+    private float cameraMovementThreshold = 0.1f; // Chỉ update khi camera di chuyển > 10cm
 
     void OnEnable() => imageManager.trackedImagesChanged += OnImageChanged;
     void OnDisable() => imageManager.trackedImagesChanged -= OnImageChanged;
+
+    void Start()
+    {
+        if (pathLine != null)
+        {
+            pathLine.enabled = false;
+        }
+        lastCameraPosition = mainCamera.position;
+    }
 
     void OnImageChanged(ARTrackedImagesChangedEventArgs args)
     {
@@ -53,59 +64,51 @@ public class ARNavigationManager : MonoBehaviour
         // worldContent.Rotate(Vector3.up, 180);
 
         worldContent.gameObject.SetActive(true);
-        
-        // ✅ Đặt Agent ở vị trí Camera lần đầu
-        Vector3 cameraPos = mainCamera.position;
-        userAgent.Warp(new Vector3(cameraPos.x, 0, cameraPos.z));
-        
         isMapAligned = true;
+        
+        Debug.Log("✅ Map aligned to marker!");
     }
 
     void Update()
     {
-        if (!isMapAligned) return;
+        if (!isMapAligned || currentTarget == null) return;
 
-        // ✅ FIX: Chỉ cập nhật vị trí Agent, KHÔNG dùng Warp liên tục
-        UpdateAgentPosition();
+        // ✅ Chỉ update khi camera di chuyển đủ xa HOẶC đến interval
+        bool cameraMoved = Vector3.Distance(mainCamera.position, lastCameraPosition) > cameraMovementThreshold;
+        bool timeToUpdate = Time.time - lastPathUpdateTime > pathUpdateInterval;
 
-        // ✅ Chỉ vẽ lại path theo interval
-        if (currentTarget != null && Time.time - lastPathUpdateTime > pathUpdateInterval)
+        if (cameraMoved || timeToUpdate)
         {
-            DrawPathToTarget();
+            DrawPathFromCameraToTarget();
+            lastCameraPosition = mainCamera.position;
             lastPathUpdateTime = Time.time;
         }
     }
 
-    // ✅ THAY ĐỔI QUAN TRỌNG: Dùng transform.position thay vì Warp
-    void UpdateAgentPosition()
+    void DrawPathFromCameraToTarget()
     {
-        if (!userAgent.isOnNavMesh) return;
-
-        Vector3 cameraPos = mainCamera.position;
-        Vector3 targetPos = new Vector3(cameraPos.x, userAgent.transform.position.y, cameraPos.z);
-        
-        // Dùng transform.position để di chuyển mượt
-        userAgent.transform.position = targetPos;
-        
-        // Hoặc dùng NavMesh.SamplePosition nếu cần snap về NavMesh
-        // NavMeshHit hit;
-        // if (NavMesh.SamplePosition(targetPos, out hit, 2f, NavMesh.AllAreas))
-        // {
-        //     userAgent.transform.position = hit.position;
-        // }
-    }
-
-    void DrawPathToTarget()
-    {
-        if (!userAgent.isOnNavMesh || currentTarget == null)
+        if (currentTarget == null)
         {
             pathLine.enabled = false;
             return;
         }
 
+        // ✅ Tính đường từ vị trí Camera (người dùng) đến target
+        Vector3 startPos = mainCamera.position;
+        
+        // Snap vị trí xuống NavMesh gần nhất
+        NavMeshHit startHit;
+        if (!NavMesh.SamplePosition(startPos, out startHit, 2f, NavMesh.AllAreas))
+        {
+            Debug.LogWarning("Camera không ở gần NavMesh!");
+            pathLine.enabled = false;
+            return;
+        }
+
+        // Tính path
         NavMeshPath path = new NavMeshPath();
         bool foundPath = NavMesh.CalculatePath(
-            userAgent.transform.position,
+            startHit.position,
             currentTarget.position,
             NavMesh.AllAreas,
             path
@@ -113,11 +116,11 @@ public class ARNavigationManager : MonoBehaviour
 
         if (foundPath && path.status == NavMeshPathStatus.PathComplete && path.corners.Length > 0)
         {
-            // ✅ Nâng đường lên một chút để không bị chìm vào sàn
+            // Nâng các điểm lên một chút
             Vector3[] corners = new Vector3[path.corners.Length];
             for (int i = 0; i < path.corners.Length; i++)
             {
-                corners[i] = path.corners[i] + Vector3.up * 0.1f;
+                corners[i] = path.corners[i] + Vector3.up * pathHeightOffset;
             }
             
             pathLine.positionCount = corners.Length;
@@ -127,6 +130,7 @@ public class ARNavigationManager : MonoBehaviour
         else
         {
             pathLine.enabled = false;
+            Debug.LogWarning($"Không tìm được đường đến {currentTarget.name}");
         }
     }
 
@@ -138,18 +142,18 @@ public class ARNavigationManager : MonoBehaviour
             
             if (currentTarget != null)
             {
-                pathLine.enabled = true;
-                DrawPathToTarget(); // ✅ Vẽ ngay lập tức
+                DrawPathFromCameraToTarget(); // Vẽ ngay
+                Debug.Log($"✅ Đã chọn: {destinationList[index].roomName}");
             }
             else
             {
                 pathLine.enabled = false;
-                pathLine.positionCount = 0;
-                Debug.LogWarning($"Không tìm được đường đến {destinationList[index].roomName}");
+                Debug.LogWarning($"❌ Không tìm được đường đến {destinationList[index].roomName}");
             }
         }
         else
         {
+            // Clear destination
             currentTarget = null;
             pathLine.enabled = false;
             pathLine.positionCount = 0;
@@ -161,6 +165,16 @@ public class ARNavigationManager : MonoBehaviour
         if (doors == null || doors.Count == 0) return null;
         if (doors.Count == 1) return doors[0];
 
+        // Lấy vị trí camera hiện tại
+        Vector3 cameraPos = mainCamera.position;
+        NavMeshHit hit;
+        
+        if (!NavMesh.SamplePosition(cameraPos, out hit, 2f, NavMesh.AllAreas))
+        {
+            Debug.LogWarning("Camera không ở gần NavMesh khi tìm cửa gần nhất!");
+            return doors[0]; // Trả về cửa đầu tiên
+        }
+
         Transform bestDoor = null;
         float shortestDistance = Mathf.Infinity;
         NavMeshPath testPath = new NavMeshPath();
@@ -170,7 +184,7 @@ public class ARNavigationManager : MonoBehaviour
             if (door == null) continue;
 
             bool foundPath = NavMesh.CalculatePath(
-                userAgent.transform.position,
+                hit.position,
                 door.position,
                 NavMesh.AllAreas,
                 testPath
@@ -206,16 +220,36 @@ public class ARNavigationManager : MonoBehaviour
         return length;
     }
 
-    // ✅ Debug helper
+    // ✅ Hiển thị khoảng cách còn lại
+    public float GetRemainingDistance()
+    {
+        if (currentTarget == null || !isMapAligned) return -1f;
+
+        NavMeshPath path = new NavMeshPath();
+        Vector3 cameraPos = mainCamera.position;
+        NavMeshHit hit;
+        
+        if (NavMesh.SamplePosition(cameraPos, out hit, 2f, NavMesh.AllAreas))
+        {
+            if (NavMesh.CalculatePath(hit.position, currentTarget.position, NavMesh.AllAreas, path))
+            {
+                return GetPathLength(path);
+            }
+        }
+        
+        return -1f;
+    }
+
+    // ✅ Debug Gizmos
     void OnDrawGizmos()
     {
         if (!Application.isPlaying || !isMapAligned) return;
 
-        // Vẽ vị trí Agent
-        if (userAgent != null)
+        // Vẽ vị trí Camera (người dùng)
+        if (mainCamera != null)
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(userAgent.transform.position, 0.3f);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(mainCamera.position, 0.3f);
         }
 
         // Vẽ target hiện tại

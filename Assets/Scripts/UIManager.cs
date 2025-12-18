@@ -6,7 +6,7 @@ public class UIManager : MonoBehaviour
 {
     [Header("References")]
     public TMP_Dropdown roomDropdown;
-    public ARNavigationManager navManager;
+    public ARNavigationCameraBased navManager;
 
     void Start()
     {

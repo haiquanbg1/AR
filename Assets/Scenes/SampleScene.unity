@@ -7968,7 +7968,7 @@ GameObject:
   - component: {fileID: 789789809}
   - component: {fileID: 789789808}
   - component: {fileID: 789789814}
-  - component: {fileID: 789789813}
+  - component: {fileID: 789789815}
   m_Layer: 0
   m_Name: XR Origin (Mobile AR)
   m_TagString: Untagged
@@ -8056,7 +8056,7 @@ Transform:
   - {fileID: 558204625}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &789789813
+--- !u!114 &789789814
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8065,13 +8065,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 789789807}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5b66c94077fead49b6b607b23820881, type: 3}
+  m_Script: {fileID: 11500000, guid: 4dea56a9eaadd1c439095de4f9a371cb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ARNavigationManager
+  m_EditorClassIdentifier: Unity.XR.ARFoundation::UnityEngine.XR.ARFoundation.ARTrackedImageManager
+  <trackablesChanged>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SerializedLibrary: {fileID: 11400000, guid: abaa0ceb0f39ff94b899f3118d359267, type: 2}
+  m_MaxNumberOfMovingImages: 0
+  m_TrackedImagePrefab: {fileID: 0}
+--- !u!114 &789789815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789789807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eceb721fc0540f468334827d4dfe8fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARNavigationCameraBased
   imageManager: {fileID: 789789814}
   worldContent: {fileID: 608830357}
   mainCamera: {fileID: 821720913}
-  userAgent: {fileID: 1758604825}
   pathLine: {fileID: 350242961}
   destinationList:
   - roomName: 101
@@ -8156,24 +8173,8 @@ MonoBehaviour:
   - roomName: wc2
     targetTransforms:
     - {fileID: 53653034}
---- !u!114 &789789814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 789789807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dea56a9eaadd1c439095de4f9a371cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.ARFoundation::UnityEngine.XR.ARFoundation.ARTrackedImageManager
-  <trackablesChanged>k__BackingField:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SerializedLibrary: {fileID: 11400000, guid: abaa0ceb0f39ff94b899f3118d359267, type: 2}
-  m_MaxNumberOfMovingImages: 0
-  m_TrackedImagePrefab: {fileID: 0}
+  pathUpdateInterval: 0.3
+  pathHeightOffset: 0.1
 --- !u!1 &795715124
 GameObject:
   m_ObjectHideFlags: 0
@@ -9308,7 +9309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   roomDropdown: {fileID: 2081771790}
-  navManager: {fileID: 789789813}
+  navManager: {fileID: 789789815}
 --- !u!4 &845521126
 Transform:
   m_ObjectHideFlags: 0
