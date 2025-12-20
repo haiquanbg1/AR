@@ -48,13 +48,10 @@ public class ARNavigationManager : MonoBehaviour
     {
         worldContent.position = marker.transform.position;
         worldContent.rotation = marker.transform.rotation;
-        
-        // Điều chỉnh góc quay nếu cần
-        // worldContent.Rotate(Vector3.up, 180);
+
 
         worldContent.gameObject.SetActive(true);
         
-        // ✅ Đặt Agent ở vị trí Camera lần đầu
         Vector3 cameraPos = mainCamera.position;
         userAgent.Warp(new Vector3(cameraPos.x, 0, cameraPos.z));
         
@@ -65,10 +62,8 @@ public class ARNavigationManager : MonoBehaviour
     {
         if (!isMapAligned) return;
 
-        // ✅ FIX: Chỉ cập nhật vị trí Agent, KHÔNG dùng Warp liên tục
         UpdateAgentPosition();
 
-        // ✅ Chỉ vẽ lại path theo interval
         if (currentTarget != null && Time.time - lastPathUpdateTime > pathUpdateInterval)
         {
             DrawPathToTarget();
@@ -76,7 +71,6 @@ public class ARNavigationManager : MonoBehaviour
         }
     }
 
-    // ✅ THAY ĐỔI QUAN TRỌNG: Dùng transform.position thay vì Warp
     void UpdateAgentPosition()
     {
         if (!userAgent.isOnNavMesh) return;
@@ -84,15 +78,8 @@ public class ARNavigationManager : MonoBehaviour
         Vector3 cameraPos = mainCamera.position;
         Vector3 targetPos = new Vector3(cameraPos.x, userAgent.transform.position.y, cameraPos.z);
         
-        // Dùng transform.position để di chuyển mượt
         userAgent.transform.position = targetPos;
         
-        // Hoặc dùng NavMesh.SamplePosition nếu cần snap về NavMesh
-        // NavMeshHit hit;
-        // if (NavMesh.SamplePosition(targetPos, out hit, 2f, NavMesh.AllAreas))
-        // {
-        //     userAgent.transform.position = hit.position;
-        // }
     }
 
     void DrawPathToTarget()
@@ -113,7 +100,6 @@ public class ARNavigationManager : MonoBehaviour
 
         if (foundPath && path.status == NavMeshPathStatus.PathComplete && path.corners.Length > 0)
         {
-            // ✅ Nâng đường lên một chút để không bị chìm vào sàn
             Vector3[] corners = new Vector3[path.corners.Length];
             for (int i = 0; i < path.corners.Length; i++)
             {
@@ -139,7 +125,7 @@ public class ARNavigationManager : MonoBehaviour
             if (currentTarget != null)
             {
                 pathLine.enabled = true;
-                DrawPathToTarget(); // ✅ Vẽ ngay lập tức
+                DrawPathToTarget(); 
             }
             else
             {
@@ -206,19 +192,16 @@ public class ARNavigationManager : MonoBehaviour
         return length;
     }
 
-    // ✅ Debug helper
     void OnDrawGizmos()
     {
         if (!Application.isPlaying || !isMapAligned) return;
 
-        // Vẽ vị trí Agent
         if (userAgent != null)
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(userAgent.transform.position, 0.3f);
         }
 
-        // Vẽ target hiện tại
         if (currentTarget != null)
         {
             Gizmos.color = Color.red;

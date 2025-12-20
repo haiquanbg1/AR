@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
-using TMPro; // Thư viện cho UI mới
+using TMPro; 
 
 [System.Serializable]
 public class RoomData
@@ -14,7 +14,7 @@ public class NavigationManager : MonoBehaviour
 {
     [Header("Components")]
     public NavMeshAgent agent;
-    public TMP_Dropdown roomDropdown; // Kéo cái UI Dropdown vào đây
+    public TMP_Dropdown roomDropdown;
 
     [Header("Data")]
     public List<RoomData> allRooms;
@@ -23,7 +23,6 @@ public class NavigationManager : MonoBehaviour
 
     void Start()
     {
-        // Tự động ẩn tất cả các cửa khi bắt đầu game để đỡ phải chỉnh tay
         foreach(var room in allRooms)
         {
             foreach(var door in room.doors)
@@ -33,7 +32,6 @@ public class NavigationManager : MonoBehaviour
             }
         }
 
-        // Tự động nạp tên phòng vào Dropdown
         SetupDropdown();
     }
 
@@ -48,13 +46,10 @@ public class NavigationManager : MonoBehaviour
         roomDropdown.AddOptions(options);
     }
 
-    // Hàm này sẽ gắn vào nút Bấm (Button)
     public void OnStartNavigationCheck()
     {
-        // Lấy tên phòng đang chọn trong Dropdown
         string selectedName = roomDropdown.options[roomDropdown.value].text;
         
-        // Gọi hàm đi chuyển
         GoToRoom(selectedName);
     }
 
@@ -80,7 +75,6 @@ public class NavigationManager : MonoBehaviour
 
     Transform GetClosestDoor(RoomData room)
     {
-        // (Giữ nguyên logic tính toán như cũ)
         Transform bestDoor = null;
         float shortestDistance = Mathf.Infinity;
         NavMeshPath path = new NavMeshPath();

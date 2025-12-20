@@ -24,13 +24,13 @@ public class ARNavigationCameraBased : MonoBehaviour
     
     [Header("Settings")]
     public float pathUpdateInterval = 0.3f;
-    public float pathHeightOffset = 0.1f; // Nâng đường lên khỏi sàn
+    public float pathHeightOffset = 0.1f; 
     
     private Transform currentTarget;
     private bool isMapAligned = false;
     private float lastPathUpdateTime = 0f;
     private Vector3 lastCameraPosition;
-    private float cameraMovementThreshold = 0.1f; // Chỉ update khi camera di chuyển > 10cm
+    private float cameraMovementThreshold = 0.1f; 
 
     void OnEnable() => imageManager.trackedImagesChanged += OnImageChanged;
     void OnDisable() => imageManager.trackedImagesChanged -= OnImageChanged;
@@ -63,9 +63,7 @@ public class ARNavigationCameraBased : MonoBehaviour
             marker.transform.eulerAngles.y,
             0
         );
-        
-        // Điều chỉnh góc quay nếu cần
-        // worldContent.Rotate(Vector3.up, 180);
+
 
         worldContent.gameObject.SetActive(true);
         isMapAligned = true;
@@ -77,7 +75,6 @@ public class ARNavigationCameraBased : MonoBehaviour
     {
         if (!isMapAligned || currentTarget == null) return;
 
-        // ✅ Chỉ update khi camera di chuyển đủ xa HOẶC đến interval
         bool cameraMoved = Vector3.Distance(mainCamera.position, lastCameraPosition) > cameraMovementThreshold;
         bool timeToUpdate = Time.time - lastPathUpdateTime > pathUpdateInterval;
 
@@ -97,10 +94,8 @@ public class ARNavigationCameraBased : MonoBehaviour
             return;
         }
 
-        // ✅ Tính đường từ vị trí Camera (người dùng) đến target
         Vector3 startPos = mainCamera.position;
         
-        // Snap vị trí xuống NavMesh gần nhất
         NavMeshHit startHit;
         if (!NavMesh.SamplePosition(startPos, out startHit, 2f, NavMesh.AllAreas))
         {
@@ -109,7 +104,6 @@ public class ARNavigationCameraBased : MonoBehaviour
             return;
         }
 
-        // Tính path
         NavMeshPath path = new NavMeshPath();
         bool foundPath = NavMesh.CalculatePath(
             startHit.position,
@@ -120,7 +114,6 @@ public class ARNavigationCameraBased : MonoBehaviour
 
         if (foundPath && path.status == NavMeshPathStatus.PathComplete && path.corners.Length > 0)
         {
-            // Nâng các điểm lên một chút
             Vector3[] corners = new Vector3[path.corners.Length];
             for (int i = 0; i < path.corners.Length; i++)
             {
@@ -157,7 +150,6 @@ public class ARNavigationCameraBased : MonoBehaviour
         }
         else
         {
-            // Clear destination
             currentTarget = null;
             pathLine.enabled = false;
             pathLine.positionCount = 0;
@@ -169,14 +161,13 @@ public class ARNavigationCameraBased : MonoBehaviour
         if (doors == null || doors.Count == 0) return null;
         if (doors.Count == 1) return doors[0];
 
-        // Lấy vị trí camera hiện tại
         Vector3 cameraPos = mainCamera.position;
         NavMeshHit hit;
         
         if (!NavMesh.SamplePosition(cameraPos, out hit, 2f, NavMesh.AllAreas))
         {
             Debug.LogWarning("Camera không ở gần NavMesh khi tìm cửa gần nhất!");
-            return doors[0]; // Trả về cửa đầu tiên
+            return doors[0]; 
         }
 
         Transform bestDoor = null;
@@ -224,7 +215,6 @@ public class ARNavigationCameraBased : MonoBehaviour
         return length;
     }
 
-    // ✅ Hiển thị khoảng cách còn lại
     public float GetRemainingDistance()
     {
         if (currentTarget == null || !isMapAligned) return -1f;
@@ -244,19 +234,16 @@ public class ARNavigationCameraBased : MonoBehaviour
         return -1f;
     }
 
-    // ✅ Debug Gizmos
     void OnDrawGizmos()
     {
         if (!Application.isPlaying || !isMapAligned) return;
 
-        // Vẽ vị trí Camera (người dùng)
         if (mainCamera != null)
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(mainCamera.position, 0.3f);
         }
 
-        // Vẽ target hiện tại
         if (currentTarget != null)
         {
             Gizmos.color = Color.red;
